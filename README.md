@@ -8,7 +8,7 @@
   1. sql
   2. nosql
 ## 框架
-  1. [spring](https://https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  1. [spring](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   2. springmvc
   3. mybatis
   4. springboot
