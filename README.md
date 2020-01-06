@@ -28,7 +28,13 @@
   1. [git](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   2. [maven](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 设计模式
+1. 单例模式
+2. 工厂模式
+3. 代理模式
 ## 网络
+1. http
 ## Linux常用命令及功能
-## 算法
+1. 命令
+2. 功能
+
 
