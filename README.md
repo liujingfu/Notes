@@ -5,8 +5,12 @@
   4. IO
   5. 虚拟机
 ## 数据库
-  1. sql
-  2. nosql
+   ### sql
+   1. mysql
+   2. mysql 方言
+   ### nosql
+   1. redis
+   ### 优化
 ## 框架
   1. [spring](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   2. springmvc
