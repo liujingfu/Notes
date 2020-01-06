@@ -7,10 +7,13 @@
 ## 数据库
    ### sql
    1. [mysql](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
-      * [mysql 方言](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   2. [oracle](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### nosql
    1. [redis](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### 优化
+   1. 语句优化
+   2. 参数优化
+   3. 表结构优化
 ## 框架
   1. [spring](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   2. [springmvc](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
@@ -27,3 +30,4 @@
 ## 设计模式
 ## 网络
 ## Linux常用命令及功能
+## 算法
