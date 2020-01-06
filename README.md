@@ -5,8 +5,8 @@
   4. IO
   5. 虚拟机
 # 数据库
-  1.sql
-  2.nosql
+  1. sql
+  2. nosql
 # 框架
   1. spring
   2. springmvc
