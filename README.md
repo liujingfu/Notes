@@ -8,15 +8,15 @@
   1.sql
   2.nosql
 # 框架
-  1.spring
-  2.springmvc
-  3.mybatis
-  4.springboot
-  5.springcloud
+  1. spring
+  2. springmvc
+  3. mybatis
+  4. springboot
+  5. springcloud
 # 中间件
-  1.rabbitmq
+  1. rabbitmq
 # 工程化工具
-  1.git
+  1. git
 # 设计模式
 # 网络
-# Linux
+# Linux常用命令及功能
