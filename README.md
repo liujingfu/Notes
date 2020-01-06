@@ -1,29 +1,29 @@
 ## 基础
-  1. Java基础
-  2. 容器
-  3. 并发
-  4. IO
-  5. 虚拟机
+  1. [Java基础](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  2. [容器](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  3. [并发](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  4. [IO](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  5. [虚拟机](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 数据库
    ### sql
-   1. mysql
-   2. mysql 方言
+   1. [mysql](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+      * [mysql 方言](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### nosql
-   1. redis
+   1. [redis](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### 优化
 ## 框架
   1. [spring](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
-  2. springmvc
-  3. mybatis
-  4. springboot
-  5. springcloud
-  6. shiro
-  7.spring security oauth2
+  2. [springmvc](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  3. [mybatis](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  4. [springboot](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  5. [springcloud](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  6. [shiro](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  7. [spring security oauth2](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 中间件
-  1. rabbitmq
+  1. [rabbitmq](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 工程化工具
-  1. git
-  2. maven
+  1. [git](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  2. [maven](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 设计模式
 ## 网络
 ## Linux常用命令及功能
