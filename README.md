@@ -34,7 +34,7 @@
 ## 网络
 1. http
 ## Linux常用命令及功能
-1. 命令
+1. [命令](https://github.com/liujingfu/Notes/blob/master/notes/git常用命令.txt)
 2. 功能
 
 
