@@ -1,6 +1,6 @@
 1.查看远程地址
-git remote -v
+   git remote -v
 2.关联远程仓库
-git remote add origin url
+   git remote add origin url
 3.初次push
-git push -u origin master --远程没有master会创建新的master
+   git push -u origin master --远程没有master会创建新的master
