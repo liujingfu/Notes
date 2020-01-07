@@ -23,9 +23,9 @@
   6. [shiro](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   7. [spring security oauth2](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 中间件
-  1. [rabbitmq](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  1. [rabbitmq](https://github.com/liujingfu/Notes/blob/master/notes/git常用命令.txt)
 ## 工程化工具
-  1. [git](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  1. [git](https://github.com/liujingfu/Notes/blob/master/notes/git常用命令.txt)
   2. [maven](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 设计模式
 1. 单例模式
