@@ -1,5 +1,5 @@
 ## 基础
-  1. [Java基础](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+  1. [Java基础](https://github.com/liujingfu/Notes/blob/master/notes/java/Java基础.md)
   2. [容器](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   3. [并发](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   4. [IO](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
