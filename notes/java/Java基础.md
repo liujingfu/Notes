@@ -17,8 +17,8 @@
          public static void main(string[] args){
       System.out.println("hello word");
    }
-}
-    <code>
+} </code>
+
     1. java大小写敏感
     2. 访问修饰符
     3. 程序入口
