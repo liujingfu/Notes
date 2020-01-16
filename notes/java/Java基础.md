@@ -12,12 +12,12 @@
 
 
 ##  一个简单的应用程序
-    <code>
+    <pre><code>
       public class Test{
          public static void main(string[] args){
       System.out.println("hello word");
    }
-} </code>
+}</code></pre>
 
     1. java大小写敏感
     2. 访问修饰符
