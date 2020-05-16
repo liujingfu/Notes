@@ -8,12 +8,15 @@
    ### sql
    1. [mysql](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    2. [oracle](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   3. [应用场景](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   4. [数据库方法汇总](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### nosql
    1. [redis](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### 优化
-   1. 语句优化
-   2. 参数优化
-   3. 表结构优化
+   1. [语句优化](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   2. [参数优化](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   3. [表结构优化](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+ 
 ## 框架
   1. [spring](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
   2. [springmvc](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
@@ -28,9 +31,7 @@
   1. [git](https://github.com/liujingfu/Notes/blob/master/notes/git常用命令.txt)
   2. [maven](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 设计模式
-1. 单例模式
-2. 工厂模式
-3. 代理模式
+  1. [常用的设计模式](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
 ## 网络
 1. http
 ## Linux常用命令及功能
