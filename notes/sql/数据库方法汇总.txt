@@ -72,7 +72,58 @@
            GET_LOCT(name,time)函数定义一个名称为nam、持续时间长度为time秒的锁。如果锁定成功，返回1；如果尝试超时，返回0；如果遇到错误，返回NULL。RELEASE_LOCK(name)函数解除名称为name的锁。如果解锁成功，返回1；如果尝试超时，返回0；如果解锁失败，返回NULL；IS_FREE_LOCK(name)函数判断是否使用名为name的锁。如果使用，返回0；否则，返回1
            CONVERT(s USING cs)函数将字符串s的字符集变成cs.
            CAST(x AS type)和CONVERT(x,type)这两个函数将x变成type类型。这两个函数只对BINARY、CHAR、DATE、DATETIME、TIME、SIGNED INTEGER、UNSIGNED INTEGER这些类型起作用。但两种方法只是改变了输出值的数据类型，并没有改变表中字段的类型.
+
 ## oracle方法
-  1. 方法列表
-  2. 处理时间
-  3. 处理字符串
+
+  1. 数值函数
+           CEIL(n):大于或等于数值n的最小整数.SELECT CEIL(10.6) FROM TABLE_NAME; 11
+           FLOOR(n):小于等于数值n的最大整数　  SELECT FLOOR (10.6) FROM TABLE_NAME; 10
+           MOD(m,n):m除以n的余数,若n=0,则返回m SELECT MOD (7,5) FROM TABLE_NAME l; 2
+           POWER(m,n):m的n次方　SELECT POWER (3,2) FROM TABLE_NAME; 9
+           ROUND(n,m):将n四舍五入,保留小数点后m位 SELECT ROUND (1234.5678,2) FROM TABLE_NAME; 1234.57
+           SIGN(n):若n=0,则返回0,否则,n>0,则返回1,n<0,则返回-1 SELECT SIGN (12) FROM TABLE_NAME; 1
+           SQRT(n):n的平方根　SELECT SQRT (25) FROM TABLE_NAME; 5
+           AVG([distinct l all] expr).
+           MAX([distinct l all] expr).
+           MIN([distinct l all] expr).
+           SUM([distinct l all] expr).
+           COUNT([distinct l all] expr) MIN([distinct l all] expr):返回查询的记录数
+  2. 常用字符函数
+           INITICAP(char):把每个字符串的第一个字符换成大写.
+           LOWER(char):整个字符串换成小写.
+           REPLACE(char,str1,str2):字符串中所有str1换成str2.
+           SUBSTR(char,m,n):取出从m字符开始的n个字符的子串.
+           LENGTH(char):求字符串的长度.
+           ||:并置运算符 SELECT 'ABCD'||'EFGH' FROM TABLE_NAME;  ABCDEFGH
+           CONCAT (char1, char2):返回连接“char2”的“char1”.
+           INITCAP(string):将“string”的字符转成大写.
+           LPAD(char1,n [,char2]):返回“char1”，左起由“char2”中的字符补充到“n”个字符长。如果“char1”比“n”长，则函数返回“char1”的前“n”个字符.
+           LTRIM(string,trim_set):从左边删除字符，此处“string”是数据库的列，或者是字面字符串，而“trim_set” 是我们要去掉的字符的集合.
+           REPLACE(string, if, then):用 0 或其他字符代替字符串中的字符。“if”是字符或字符串，对于每个出现在“string”中的“if”，都用“then”的内容代替.
+           RPAD(char1, n [,char2]):返回“char1”，右侧用“char2”中的字符补充到“n”个字符长。如果 “char1”比“n” 长，则函数返回“char1”的前“n”个字符.
+           RTRIM(string,trim_set):从右侧删除字符，此处“string”是数据库的列，或者是字面字符串，而“trim_set” 是我们要去掉的字符的集合.
+           TRANSLATE(string, if, then):“if”中字符的位置，并检查“then”的相同位置，然后用该位置的字符替换 “string”中的字符.
+           UPPER(string):返回大写的“string”.
+           ASCII(string):该命令是“American Standard Code for Information Interchange”的缩写。它是使用数字表示可打印字符的基本规则。该函数返回 “string”中第一个（最左边）字符的 ASCII 值
+           INSTR (string, set[, start[, occurrence] ] ):该命令“string”中从“start”位置开始查找字符集合的位置，再查找“set”出现的第一次、第二次等等的“occurrence”（次数）。“start”的值也可以是负数，代表从字符串结尾开始向反方向搜索。该函数也用于数字和日期数据类型
+
+  3. 日期型函数
+           SYSDATE:当前日期和时间 SELECT SYSDATE FROM TABLE_NAME;
+           LAST_DAY:本月最后一天 SELECT LAST_DAY(SYSDATE) FROM TABLE_NAME;
+           ADD_MONTHS(d,n):当前日期d后推n个月 SELECT ADD_MONTHS (SYSDATE,2) f FROM TABLE_NAME;
+           MONTHS_BETWEEN(d,n):日期d和n相差月数 SELECT MONTHS_BETWEEN(SYSDATE,TO_DATE('20020812','YYYYMMDD'))FROMTABLE_NAME;
+           NEXT_DAY(d,day) d后第一周指定day的日期 SELECT NEXT_DAY (SYSDATE,'Monday') FROM TABLE_NAME;
+           TO_CHAR(SYSDATE,'YYY').获取特定格式的日期字符串，'YYYY-MM-DD HH:24:mi:ss'：格式可以符合规则下任意形式
+           TO_NUMBER() 将合法的字符串转换为数字   SELECT TO_NUMBER ('88877') FROM TABLE_NAME; 88877
+           字符串和时间互转:select to_date('2004-05-07 13:23:44','yyyy-mm-dd hh24:mi:ss') from dual; select to_char( to_date(222,'J'),'Jsp') from dual //显示Two Hundred Twenty-Two
+
+  4. NULL函数
+           COALESCE(expr):返回表达式列表中第一个不为NULL的函数，如果都为NULL，则返回一个null.
+           LNNVL(condition):返回除了condition要求的条件之外的数据，包括NULL的条件，通常用于WHERE条件中.
+           NVL(expr1,expr2[,expr3]):NVL(expr1,expr2)，替换NULL值，如果expr1为NULL值，则返回expr2的值，否则返回expr1的值。该函数要求两个参数类型一致至少相互之间可以进行隐式的转换.
+
+  5, 其他函数
+           USER:返回登录名函数,
+           USERENV(parameter):返回当前会话信息.
+           SYS_CONTEXT(namespace,parameter):返回oracle已经创建的context，名为USERENV的属性对应值
+           DECODE(expr,search,result[,search1,result1][,default]):表达式匹配函数，当expr符合条件search时返回result的值，该过程可以重复多个，如果没有匹配结果放回默认值default，这是一对一匹配过程，类似switch
