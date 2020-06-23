@@ -1,0 +1,88 @@
+## 公共字段和语句块
+<!-- 查询字段 -->
+<sql id="Base_Column">
+    ID,MAJOR,BIRTHDAY,AGE,NAME,HOBBY
+</sql>
+
+<!-- 条件字段块 -->
+<sql id="condition1">
+    <where>
+            <if test="name!=null and name!='' ">
+                NAME LIKE CONCAT(CONCAT('%', #{name}),'%')
+            </if>
+            <if test="hobby!= null and hobby!= '' ">
+                AND hobby = #{hobby}
+            </if>
+            <if test="id!= null and hobby!= '' ">
+                AND id in
+                  <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                          #{item}
+                  </foreach>
+            </if>
+       </where>
+</sql>
+
+<!-- 条件字段块 -->
+<sql id="condition2">
+<where>
+        <choose>
+            <when test="Name!=null and student!='' ">
+                AND name LIKE CONCAT(CONCAT('%', #{student}),'%')
+            </when>
+            <when test="hobby!= null and hobby!= '' ">
+                AND hobby = #{hobby}
+            </when>
+            <otherwise>
+                AND AGE = 15
+            </otherwise>
+        </choose>
+    </where>
+</sql>
+
+
+
+## select
+         <select id="selectAll" resultMap="BaseResultMap">
+               SELECT
+               <include refid="Base_Column" />
+               FROM student
+               <include refid="condition1" />
+         </select>
+
+## update
+         <update id="updateStudent" parameterType="Object">
+               UPDATE STUDENT
+               <set>
+                   <if test="name!=null and name!='' ">
+                       NAME = #{name},
+                   </if>
+                   <if test="hobby!=null and hobby!='' ">
+                       MAJOR = #{major},
+                   </if>
+                   <if test="hobby!=null and hobby!='' ">
+                       HOBBY = #{hobby}
+                   </if>
+               </set>
+               WHERE ID in
+               <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+               #{item}
+               </foreach>
+         </update>
+
+## delete
+        <delete id="deleteByEntity" parameterType="java.util.Map">
+            DELETE FROM student
+            <include refid="Example_Where_Clause" />
+        </delete>
+
+## insert
+        <insert id="insert" parameterType="Object">
+            insert into student
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="name != null"> NAME, </if>
+            </trim>
+            <trim prefix="values(" suffix=")" suffixOverrides=",">
+                <if test="name != null"> #{name}, </if>
+             </trim>
+        </insert>
+
