@@ -1,0 +1,535 @@
+Hadoop·权威指南 PDF 第三版
+
+Linux
+
+vmware workstation 12
+
+Ubuntu Desktop/Server 16.04 LTS
+
+16.10
+17.04 10
+
+JDK 1.8-u152
+
+hadoop-2.8.3
+
+Eclipse
+Idea
+
+云计算： 云计算平台
+阿里云
+腾讯云
+百度云
+京东云
+
+大数据技术基础
+Bigdata Technology Foundation
+大数据基础技术
+Bigdata Basic Technology
+
+github
+stack overflow
+csdn
+oschina.net 开源中国
+
+Ruby
+Python
+
+
+----集群搭建---
+vmware workstation：
+Linux操作系统：
+
+HDFS集群：
+0.目录规划：
+	在家目录下创建目录“Bigdata”
+	mkdir ~/Bigdata
+1.安装JDK。
+	a.解压jdk-8u152.tar.gz
+		tar zxvf jdk-8u152.tar.gz -C ~/Bigdata
+	b.创建软链接
+		ln -s ~/Bigdata/jdk... ~/Bigdata/jdk
+	c.配置环境变量
+		系统环境变量：/etc/profile
+		用户环境变量：~/.profile
+		gedit ~/.profile
+
+		####__JDK_CONF__####
+		export JAVA_HOME=/home/kevin/Bigdata/jdk
+		export JRE_HOME=$JAVA_HOME/jre
+		export CLASSPATH=.:$JAVA_HOME/lib
+		export PATH=$PATH:$JAVA_HOME/bin
+	d.更新环境变量配置，测试是否配置成功
+		source ~/.profile
+		java -version
+2.安装Hadoop
+	a.解压hadoop-2.8.3.tar.gz
+		tar zxvf hadoop-2.8.3.tar.gz -C ~/Bigdata
+	b.创建软链接
+		ln -s ~/Bigdata/hadoop-2.8.3 ~/Bigdata/hadoop
+	c.配置环境变量，用户环境变量。
+		gedit ~/.profile
+
+		####__HADOOP_CONF__####
+		export HADOOP_USER_NAME=kevin
+		export HADOOP_HOME=/home/kevin/Bigdata/hadoop
+		export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+	d.更新环境变量配置，测试是否配置成功。
+		source ~/.profile
+		hadoop version
+3.搭建集群
+	单机模式 伪分布式模式 全分布式模式
+	i.环境的准备：
+		1.使用VM虚拟机，需要将网络设置为NAT模式。
+		2.通过ifconfig查看IP地址
+		3.配置主机名到IP的映射
+			sudo gedit /etc/hosts
+			a.删除该文件中的所有内容。
+			b.在该文件中写入如下两行内容：
+				127.0.0.1	localhost
+				通过ifconfig获取到的IP	主机名
+
+	ii.配置Hadoop的相关配置文件。
+		0.编辑hadoop-env.sh
+		gedit ~/Bigdata/hadoop/etc/hadoop/hadoop-env.sh
+		将第25行的内容改为：
+		export JAVA_HOME=/home/kevin/Bigdata/jdk
+
+		1.core-site.xml文件，对应Hadoop的Common组件。
+		gedit ~/Bigdata/hadoop/etc/hadoop/core-site.xml
+		<configuration>
+			<property>
+				<name>fs.defaultFS</name>
+				<value>hdfs://127.0.0.1:9000</value>
+			</property>
+		</configuration>
+		上述内容配置了整个HDFS集群的主节点的信息。
+
+		2.hdfs-site.xml，对应Hadoop中的HDFS组件。
+		gedit ~/Bigdata/hadoop/etc/hadoop/hdfs-site.xml
+		<configuration>
+			<!-- 配置集群的名字 -->
+			<property>
+				<name>dfs.nameservices</name>
+				<value>ud2-cluster</value>
+			</property>
+			<!-- 配置集群数据的备份数 -->
+			<property>
+				<name>dfs.replication</name>
+				<value>1</value>
+			</property>
+			<!-- 配置HDFS集群的主节点的数据存放位置 -->
+			<property>
+				<name>dfs.namenode.name.dir</name>
+				<value>file:///home/kevin/Bigdata/data/hadoop/hdfs/nn</value>
+			</property>
+			<!-- 下面两个配置HDFS集群的SecondaryNameNode -->
+			<property>
+				<name>dfs.namenode.checkpoint.dir</name>
+				<value>file:///home/kevin/Bigdata/data/hadoop/hdfs/snn</value>
+			</property>
+			<property>
+				<name>dfs.namenode.checkpoint.edits.dir</name>
+				<value>file:///home/kevin/Bigdata/data/hadoop/hdfs/snn</value>
+			</property>
+			<!-- 配置HDFS集群的从节点数据存放位置 -->
+			<property>
+				<name>dfs.datanode.data.dir</name>
+				<value>file:///home/kevin/Bigdata/data/hadoop/hdfs/dn</value>
+			</property>
+		</configuration>
+
+		3.格式化NameNode。
+		hdfs namenode -format
+		如果在提示信息的倒数第十行的位置出现以下提示信息，则表示格式化成功：
+		INFO common.Storage: Storage directory /home/kevin/Bigdata/data/hadoop/hdfs/nn has been successfully formatted.
+
+		4.启动HDFS集群。
+			启动NameNode：hadoop-daemon.sh start namenode
+			启动DataNode：hadoop-daemon.sh start datanode
+		5.查看集群是否正确启动
+			执行jps命令，若果出现以下进程，则表示HDFS集群启动成功。
+				2615 DataNode
+				2521 NameNode
+		6.停止HDFS集群：
+			停止NameNode：hadoop-daemon.sh stop namenode
+			停止DataNode：hadoop-daemon.sh stop datanode
+		!!!注意：如果出现只有DataNode，没有NameNode的情况：
+			1.停止集群，执行上面第6步的两个命令。
+			2.删除~/Bigdata/data/hadoop/hdfs
+				rm -r ~/Bigdata/data/hadoop/hdfs
+			3.配置core-site.xml：
+				<configuration>
+					<property>
+						<name>fs.defaultFS</name>
+						<value>hdfs://127.0.0.1:9000</value>
+					</property>
+				</configuration>
+			4.重新格式化集群。
+				hdfs namenode -format
+			5.再次启动集群，查看是否成功启动。
+		7.HDFS集群监控页面
+		http://主节点的IP:50070
+		从外部（宿主机）浏览器查看：
+		http://客户机的IP:50070
+		***VMWARE的小知识：
+			把DHCP和NAT两个服务设置为自动启动。
+		8.HDFS集群的简单命令操作
+			所有的操作HDFS集群的命令和Linux的命令大致一致。
+			问题：操作HDFS集群的用户是哪个？(HADOOP_USER_NAME)
+			a.在HDFS集群上创建家目录。
+			说明：在Linux文件系统中，用户的家目录是/home/用户名，
+				  但是在HDFS集群中，用户的家目录是/user/用户名
+			hdfs dfs -mkdir -p /user/kevin
+			b.查看集群的文件系统状态。
+			hdfs dfs -ls => 查看HDFS集群用户家目录(/user/用户名)下的内容，在HDFS集群上没有当前目录的概念。该命令等同于“hdfs dfs -ls .”
+			hdfs dfs -ls 目录 =>查看指定目录下的文件。
+			c.上传文件到集群。
+			hdfs dfs -put 源文件  集群上的某个路径
+			需求：将Linux操作系统中的/etc/passwd文件上传到集群的用户家目录下。
+			hdfs dfs -put /etc/passwd /user/kevin
+			d.下载集群文件到本地
+			hdfs dfs -get 集群上的某个文件 Linux操作系统本地目录
+			hdfs dfs -get /user/kevin/passwd ~
+			e.文件的复制，移动，删除。
+			拷贝：hdfs dfs -cp [-r] 源文件 目标文件
+			普及：Linux下的cp命令：
+				cp [-r] 源文件 目的文件
+				1.如果源文件是一个目录，则需要加-r选项。
+				2.如果目标文件已经存在，则目标文件必须是目录。
+				3.cp命令后面还可以跟多个参数，在跟多个参数的时候是，最后一个参数必须是目录。
+			需求：将用户家目录下的passwd文件拷贝到根目录下。
+			hdfs dfs -cp  /user/kevin/passwd /
+			删除：hdfs dfs -rm [-r] 文件
+			hdfs dfs -rm -r /passwd
+			移动：hdfs dfs -mv 源文件 目标文件
+			hdfs dfs -mv /user/kevin/passwd /
+			f.更改文件权限
+			hdfs dfs -chmod [-R] 777 文件
+			hdfs dfs -mkdir /abc
+			hdfs dfs -chmod 777 /abc
+4.HDFS的Java编程操作
+	a.环境搭建
+	环境要求：Idea，Maven（3.5.2），JDK（和搭建集群的JDK版本一致）
+	创建项目：HadoopDemo
+	添加Maven框架。
+	添加项目依赖：
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.hadoop</groupId>
+				<artifactId>hadoop-common</artifactId>
+				<version>2.8.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.hadoop</groupId>
+				<artifactId>hadoop-hdfs</artifactId>
+				<version>2.8.3</version>
+			</dependency>
+		</dependencies>
+	编写代码：见Idea。
+	打包：点击MavenProjects的LifeCycle下的Package。会在项目下生成target文件夹，在该文件夹中有一个以.jar结尾的文件。
+	运行：将上述jar包拷贝到Ubuntu操作系统中，执行以下命令：
+		hadoop jar xxx.jar 类全名
+	可能遇到的问题：
+		1.在Win下执行，权限问题：要么配置HADOOP_USER_NAME属性为Ubuntu的中相同的值。要么使用fs.get()带三个参数的方法，最后一个参数指定访问集群的用户名。
+		2.拒绝连接：将网络类型改成NAT，，，，，，
+	**在虚拟机中安装FTP服务器软件
+	sudo apt install vsftpd
+	sudo gedit /etc/vsftpd.conf
+	将write_enable=YES去掉注释。
+	重启vsftpd服务：sudo service vsftpd restart
+5.HDFS读取操作原理：
+	a.客户端读取文件的时候向NameNode发出读取请求，NameNode检查客户端要读取的文件是否存在，权限是否合适。
+	b.当一切检查OK，NameNode会返回给客户端FSDataInputStream对象，该对象中包含的是要查看的文件的元数据（被切分成多少块，每个数据块的存放位置）。
+	c.客户端发出读请求，在DataNode上根据FSDataInputStream中所存储的文件的元数据来读取文件，但是读取操作并不是FSDataInputStream直接完成，而是在该流内部重新创建了一个叫DFSInputStream的流对象来读取数据。
+	d.e:DFSInputStream开始在存有该文件的DataNode上读取数据。读取完成之后，DFSInputStream向FSDataInputStream报告，再向客户端报告，数据读取完成。
+	f.数据读取完成，客户端关闭相应的流对象。
+6.HDFS文件写入原理：
+	a.客户端根据实际产生一个DistributedFileSystem对象。
+	b.客户端向NameNode报告，要写入数据到该集群中，NameNode会检查一些信息是否合适（文件大小，权限等），如果一切信息检查通过，NameNode会返回给客户端一个FSDataOutputStream对象，该对象中携带了即将要存储的文件被切分的数据块的个数，还有每个数据块应该保存的节点信息。
+	c.客户端执行写操作。FSDataOutputStream内部会产生两个对象，一个是DFSOutputStream，还有一个是DataStreamer。由于数据在传输的过程中是通过网络传输的，所以DFSOutputStream的作用是将数据封装成一个个小的数据包，然后N多个数据包交给DataNode，并且会将DataStreamer的对象也一起交给DataNode。然后由DataStreamer对象往DataNode中写入数据。
+	e.当数据写入完成之后，DataStreamer会发送一个确认包给DFSOutputStream，以向FSDataOutputStream确认数据已经写完。
+	f.客户端知道数据已经写入完成，关闭相关的流对象。
+	g.客户端再次和NameNode通信，告诉NameNode数据写入完成，然后NameNode会在一个合适的时间合并FileSystemImage文件Edits文件。
+7.YARN（Yet Another Resource Nagotiator）集群搭建
+MapReduce组件--mapred-site.xml
+YARN组件--yarn-site.xml
+gedit ~/Bigdata/hadoop/etc/hadoop/yarn-site.xml
+	<configuration>
+		<!-- 配置YARN集群的主节点所在的IP地址 -->
+		<property>
+			<name>yarn.resourcemanager.hostname</name>
+			<value>ud2</value>
+		</property>
+		<!-- Map端数据处理完成之后进入Reduce端的时候数据的洗牌方式 -->
+		<property>
+			<name>yarn.nodemanager.aux-services</name>
+			<value>mapreduce_shuffle</value>
+		</property>
+		<!-- Map端处理完之后的中间结果的保存位置 -->
+		<property>
+			<name>yarn.nodemanager.local-dirs</name>
+		<value>file:///home/kevin/Bigdata/data/hadoop/yarn/nm</value>
+		</property>
+	</configuration>
+
+gedit ~/Bigdata/hadoop/etc/hadoop/mapred-site.xml
+	<configuration>
+		<!-- 配置MapReduce程序在YARN集群上运行 -->
+		<property>
+			<name>mapreduce.framework.name</name>
+			<value>yarn</value>
+		</property>
+	</configuration>
+
+启动YARN集群：
+主节点（ResourceManager）：
+yarn-daemon.sh start resourcemanager
+从节点（NodeManager）：
+yarn-daemon.sh start nodemanager
+
+查看集群是否正常启动：
+使用jps命令，当查看到有以下两个进程的时候，说明YARN集群已经正常启动。
+3152 ResourceManager
+3399 NodeManager
+
+YARN集群的WEB监控页面：
+http://ud2:8088
+
+启动作业的历史日志进程：
+mr-jobhistory-daemon.sh start historyserver
+
+提交一个简单的作业到YARN集群，进行集群测试：
+yarn jar ~/Bigdata/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.3.jar pi 4 10
+
+作业：
+1.没有完成昨天作业的继续完成。
+2.分析cite75_99.txt数据，得到每个专利号都引用了哪些专利。
+
+固定虚拟机IP地址：
+桌面版：
+服务器版：
+	1.通过ifconfig命令查看当前网络的IP地址和网卡信息。
+		ens32 Link encap:Ethernet  HWaddr 00:0c:29:84:13:76
+			  inet addr:1.0.0.80  Bcast:1.0.0.255  Mask:255.255.255.0
+			  inet6 addr: fe80::4115:fcf0:624d:5c9e/64 Scope:Link
+			  UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+			  RX packets:201510 errors:0 dropped:0 overruns:0 frame:0
+			  TX packets:192950 errors:0 dropped:0 overruns:0 carrier:0
+			  collisions:0 txqueuelen:1000
+			  RX bytes:165254682 (165.2 MB)  TX bytes:279031780 (279.0 MB)
+	2.编辑/etc/network/interfaces
+	sudo gedit /etc/network/interfaces
+		auto ens32
+		iface ens32 inet static
+		address 1.0.0.81
+		netmask 255.255.255.0
+		gateway 1.0.0.254
+		dns-nameservers 223.5.5.5 180.7.7.7 114.114.114.114 8.8.8.8 9.9.9.9
+	3.重启虚拟机
+		sudo reboot
+8.配置集群的自动启动。
+	a.配置Linux操作系统的免密登录。
+	b.编辑~/Bigdata/hadoop/etc/hadoop/slaves
+	gedit ~/Bigdata/hadoop/etc/hadoop/slaves
+	c.启动HDFS集群：
+		start-dfs.sh
+		stop-dfs.sh
+	d.启动YARN集群：
+		start-yarn.sh
+		stop-yarn.sh
+	e.启动作业历史日志服务器：
+		mr-jobhistory-daemon.sh start historyserver
+9.SSH远程拷贝
+	scp [-r] kevin@us2:~/a.txt ~
+10.Hadoop中的序列化
+	ByteWritable	byte	1	Byte
+	BooleanWritable	boolean	1	Boolean
+					char	2	Character
+					short	2	Short
+	IntWritable		int		4	Integer
+					float	4	Float
+	DoubleWriable	double	8	Double
+	LongWritable	long	8	Long
+	Text			String
+	NullWritable	null
+
+	int -> IntWritable     4
+		int i=4;
+		IntWritable iw=new IntWritable();
+		iw.set(4);
+
+	IntWritable -> int
+	IntWritable iw=new IW(4);
+	int x=iw.get();
+
+	String -> Text
+	String str="hello";
+	Text t=new Text();
+	t.set(str);
+
+	Text -> String
+	Text t=new Text("hello");
+	String s=t.toString();
+
+	在Hadoop中，一个对象（数据类型对象）有可能会被重复使用多次，这个时候，在定义Hadoop中的数据类型的时候，需要进行值的复制（赋值），而不是引用的复制（赋值）。
+	Text a=new Text();
+	Text b=a;   // 引用赋值
+
+	Text a=new Text();
+	Text b=new Text(a.toString());  // 值赋值
+
+11.Hadoop中的MapReduce
+	MR计算框架的特点：
+	0.Map任务所处理的数据尽可能的来自于同一个数据块。
+	1.一个数据块会启用一个Map任务，也就是一个待处理的文件有多少个数据块，就有多少个Map任务。
+	2.Map任务会尽可能的运行在有待处理文件的数据分块的节点上。
+	3.Map任务的个数在使用TextInputFormat的情况下只能通过调整数据块的大小来调整。
+	4.Reduce任务的个数默认只有一个。设置Reduce的个数：
+		a.在mapred-site.xml
+			mapreduce.job.reduces
+		b.在程序中设置
+			job.setNumReduceTasks(5);
+		c.在提交作业的命令行中设置
+			-Dmapreduce.job.reduces=5
+	优先级：c>b>a
+12.Hadoop中的几个概念
+分块：HDFS集群中一个大文件被切分成大小相等的数据块，这个过程称为分块。
+
+分片：一个Map任务上所有的数据输入被称为一个数据分片；可以近似的认为一个数据分片就是一个数据块。
+
+分区：在Reduce个数多于1个的情况下，根据Map任务输出的Key的Hash值来判断（K2,V2）应该进入哪个Reduce。
+
+分组：在Map任务处理的中间数据中，保证K2相同的数据进入同一个Reduce；也就是在该阶段形成了Reduce的输入数据：（K2,[V2]）
+
+13.MapReduce高级编程
+a.MapReduce程序优化——使用Combiner
+    Combiner是Map端的Reducer程序。
+    MR程序使用Combiner的条件：
+    1.Combiner的使用与否不能影响Map到Reduce的数据传输。
+    2.若果程序中定义的Reducer的数据输入和数据输出的键值类型一致，该Reducer可以直接作为Combiner使用。
+    3.如果程序中定义的Reducer不符合Combiner的要求，需要自定义Combiner。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
