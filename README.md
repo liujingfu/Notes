@@ -9,7 +9,7 @@
    1. [mysql](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    2. [oracle](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    3. [应用场景](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
-   4. [数据库方法汇总](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
+   4. [数据库方法汇总](https://github.com/liujingfu/Notes/blob/master/notes/sql/数据库方法汇总.md)
    ### nosql
    1. [redis](https://github.com/liujingfu/Notes/blob/master/notes/spring.md)
    ### 优化
